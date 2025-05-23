@@ -37,7 +37,6 @@ namespace api_catalogoproductos.Controllers
             nuevoArticulo.Precio = art.Precio;
             nuevoArticulo.Categoria = new Categoria { Id = art.IdCategoria };
             nuevoArticulo.Marca = new Marca { Id = art.IdMarca };
-            nuevoArticulo.Imagen = new Imagen { IDImagen = art.IdImagen};
 
             gestion.AgregarArticulos(nuevoArticulo);
             
@@ -51,6 +50,8 @@ namespace api_catalogoproductos.Controllers
         // DELETE: api/CatalogoProductos/5
         public void Delete(int id)
         {
+            GestionArticulos gestion = new GestionArticulos();
+            gestion.EliminarArticulos(id);
         }
     }
 }

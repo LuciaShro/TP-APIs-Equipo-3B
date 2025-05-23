@@ -73,8 +73,10 @@ namespace Gestion
 
             try
             {
+                //datos.setearConsulta("INSERT INTO ARTICULOS (Codigo, Nombre, Descripcion, IdMarca, IdCategoria, Precio) " + "VALUES ('" + articulo.codArticulo + "', '" + articulo.Nombre + "', '" + articulo.Descripcion + "', " +
+                //articulo.Marca.Id + ", " + articulo.Categoria.Id + ", " + articulo.Precio + "); " + "INSERT INTO IMAGENES (IdArticulo, ImagenUrl) " + "VALUES (SCOPE_IDENTITY(), '" + articulo.Imagen.ImagenURL + "')");
                 datos.setearConsulta("INSERT INTO ARTICULOS (Codigo, Nombre, Descripcion, IdMarca, IdCategoria, Precio) " + "VALUES ('" + articulo.codArticulo + "', '" + articulo.Nombre + "', '" + articulo.Descripcion + "', " +
-                articulo.Marca.Id + ", " + articulo.Categoria.Id + ", " + articulo.Precio + "); " + "INSERT INTO IMAGENES (IdArticulo, ImagenUrl) " + "VALUES (SCOPE_IDENTITY(), '" + articulo.Imagen.ImagenURL + "')");
+                articulo.Marca.Id + ", " + articulo.Categoria.Id + ", " + articulo.Precio + ")");
                 datos.ejecutarAccion();
             }
             catch (Exception ex)
@@ -119,9 +121,10 @@ namespace Gestion
             try
             {
                 AccesoDatos datos = new AccesoDatos();
-                datos.setearConsulta("delete from ARTICULOS where id = @id;");
+                datos.setearConsulta("delete from ARTICULOS where id = @id; DELETE from IMAGENES  where IdArticulo  = @id;");
                 datos.setearParametro("@id", id);
                 datos.ejecutarAccion();
+
             }
             catch(Exception ex)
             {
