@@ -45,13 +45,21 @@ namespace api_catalogoproductos.Controllers
 
         // agregar imagen al producto
 
-        public void PostImagen(int idArticulo, [FromBody] List<Imagen> img)
+        public HttpResponseMessage PostImagen(int idArticulo, [FromBody] List<Imagen> img)
         {
             if (img == null || img.Count == 0)
             {
-                return; 
+               return Request.CreateResponse(HttpStatusCode.BadRequest, "No estamos recibiendo imagenes para continuar");
             }
             GestionImagen gestionImagen = new GestionImagen();
+            GestionArticulos articulos = new GestionArticulos();
+
+            Articulo articulo = articulos.listar().Find(x => x.IDArticulo == idArticulo);
+
+            if (articulo== null)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "El id articulo no existe");
+            }
             
             foreach (var imagen in img)
             {
@@ -59,11 +67,12 @@ namespace api_catalogoproductos.Controllers
                 {
                     imagen.Articulo = new Articulo();
                 }
+                
                 imagen.Articulo.IDArticulo = idArticulo;
                 gestionImagen.AgregarImagen(imagen, idArticulo);
             }
 
-
+            return Request.CreateResponse(HttpStatusCode.OK, "Imagen agregada exitosamente.");
         }
 
         // PUT: api/CatalogoProductos/5
