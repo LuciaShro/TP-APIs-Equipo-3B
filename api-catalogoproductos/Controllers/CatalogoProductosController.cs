@@ -37,10 +37,33 @@ namespace api_catalogoproductos.Controllers
             nuevoArticulo.Precio = art.Precio;
             nuevoArticulo.Categoria = new Categoria { Id = art.IdCategoria };
             nuevoArticulo.Marca = new Marca { Id = art.IdMarca };
-            nuevoArticulo.Imagen = new Imagen { IDImagen = art.IdImagen };
+            //nuevoArticulo.Imagen = new Imagen { IDImagen = art.IdImagen };
 
             gestion.AgregarArticulos(nuevoArticulo);
             
+        }
+
+        // agregar imagen al producto
+
+        public void PostImagen(int idArticulo, [FromBody] List<Imagen> img)
+        {
+            if (img == null || img.Count == 0)
+            {
+                return; 
+            }
+            GestionImagen gestionImagen = new GestionImagen();
+            
+            foreach (var imagen in img)
+            {
+                if (imagen.Articulo == null)
+                {
+                    imagen.Articulo = new Articulo();
+                }
+                imagen.Articulo.IDArticulo = idArticulo;
+                gestionImagen.AgregarImagen(imagen, idArticulo);
+            }
+
+
         }
 
         // PUT: api/CatalogoProductos/5
@@ -55,6 +78,7 @@ namespace api_catalogoproductos.Controllers
             articulo.Marca = new Marca { Id = arti.IdMarca} ;
             articulo.Categoria = new Categoria { Id = arti.IdCategoria } ;
             articulo.IDArticulo = id;
+            articulo.Imagen = new Imagen { IDImagen = arti.IdImagen };
 
             gestion.ModificarArticulo(articulo);
         }
