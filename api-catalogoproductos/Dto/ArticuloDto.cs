@@ -14,7 +14,7 @@ namespace api_catalogoproductos.Dto
             private string _descripcion;
             private decimal _precio;
 
-            public int IDArticulo{ get { return _idArticulo; } set { _idArticulo = value; }}
+            public int IDArticulo { get { return _idArticulo; } set { _idArticulo = value; } }
 
             public string codArticulo{ get { return _codArticulo; } set { _codArticulo = value; }}
 

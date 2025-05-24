@@ -7,6 +7,7 @@ using System.Web.Http;
 using Dominio;
 using Gestion;
 using api_catalogoproductos.Dto;
+using System.Xml.Linq;
 
 namespace api_catalogoproductos.Controllers
 {
@@ -26,21 +27,44 @@ namespace api_catalogoproductos.Controllers
         }
 
         // POST: api/CatalogoProductos
-        public void Post([FromBody]ArticuloDto art)
+        public HttpResponseMessage Post([FromBody]ArticuloDto art)
         {
-            GestionArticulos gestion = new GestionArticulos();
-            Articulo nuevoArticulo = new Articulo();
-            nuevoArticulo.Nombre = art.Nombre;
-            nuevoArticulo.Descripcion = art.Descripcion;
-            nuevoArticulo.IDArticulo = art.IDArticulo;
-            nuevoArticulo.codArticulo = art.codArticulo;
-            nuevoArticulo.Precio = art.Precio;
-            nuevoArticulo.Categoria = new Categoria { Id = art.IdCategoria };
-            nuevoArticulo.Marca = new Marca { Id = art.IdMarca };
-            //nuevoArticulo.Imagen = new Imagen { IDImagen = art.IdImagen };
+            try
+            {
+                GestionArticulos gestion = new GestionArticulos();
+                GestionCategoria gestionCategoria = new GestionCategoria();
+                GestionMarca gestionMarca = new GestionMarca();
 
-            gestion.AgregarArticulos(nuevoArticulo);
-            
+
+                Categoria categoria = gestionCategoria.listarCategoria().Find(x => x.Id == art.IdCategoria);
+                Marca marca = gestionMarca.listarMarca().Find(x => x.Id == art.IdMarca);
+
+                if (categoria == null)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "La categoria no existe.");
+
+                if (marca == null)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "La marca no existe.");
+
+                Articulo nuevoArticulo = new Articulo();
+
+                nuevoArticulo.Nombre = art.Nombre;
+                nuevoArticulo.Descripcion = art.Descripcion;
+                //nuevoArticulo.IDArticulo = art.IDArticulo; no se agrega porque es autoincremental
+                nuevoArticulo.codArticulo = art.codArticulo;
+                nuevoArticulo.Precio = art.Precio;
+                nuevoArticulo.Categoria = new Categoria { Id = art.IdCategoria };
+                nuevoArticulo.Marca = new Marca { Id = art.IdMarca };
+                //nuevoArticulo.Imagen = new Imagen { IDImagen = art.IdImagen };
+
+                gestion.AgregarArticulos(nuevoArticulo);
+
+                return Request.CreateResponse(HttpStatusCode.OK, "Artículo creado con éxito.");
+            }
+            catch (Exception ex) {
+
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Ocurrió un error inesperado.");
+            }
+
         }
 
         // agregar imagen al producto
