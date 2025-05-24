@@ -37,6 +37,7 @@ namespace api_catalogoproductos.Controllers
             nuevoArticulo.Precio = art.Precio;
             nuevoArticulo.Categoria = new Categoria { Id = art.IdCategoria };
             nuevoArticulo.Marca = new Marca { Id = art.IdMarca };
+            nuevoArticulo.Imagen = new Imagen { IDImagen = art.IdImagen };
 
             gestion.AgregarArticulos(nuevoArticulo);
             
