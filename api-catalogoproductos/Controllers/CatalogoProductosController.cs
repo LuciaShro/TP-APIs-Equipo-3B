@@ -43,7 +43,7 @@ namespace api_catalogoproductos.Controllers
         }
 
         // PUT: api/CatalogoProductos/5
-        public void Put(int id, [FromBody]Articulo arti)
+        public void Put(int id, [FromBody]ArticuloDto arti)
         {
             GestionArticulos gestion = new GestionArticulos();
             Articulo articulo = new Articulo();
@@ -51,8 +51,8 @@ namespace api_catalogoproductos.Controllers
             articulo.Nombre = arti.Nombre;
             articulo.Descripcion = arti.Descripcion;
             articulo.Precio = arti.Precio;
-            articulo.Marca = new Marca { Nombre = arti.Marca} ;
-            articulo.Categoria = new Categoria { Nombre = arti.Categoria } ;
+            articulo.Marca = new Marca { Id = arti.IdMarca} ;
+            articulo.Categoria = new Categoria { Id = arti.IdCategoria } ;
             articulo.IDArticulo = id;
 
             gestion.ModificarArticulo(articulo);
