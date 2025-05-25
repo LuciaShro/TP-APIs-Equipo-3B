@@ -35,6 +35,10 @@ namespace api_catalogoproductos.Controllers
                 GestionCategoria gestionCategoria = new GestionCategoria();
                 GestionMarca gestionMarca = new GestionMarca();
 
+                if (art == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "El objeto ArticuloDto es null.");
+                }
 
                 Categoria categoria = gestionCategoria.listarCategoria().Find(x => x.Id == art.IdCategoria);
                 Marca marca = gestionMarca.listarMarca().Find(x => x.Id == art.IdMarca);
