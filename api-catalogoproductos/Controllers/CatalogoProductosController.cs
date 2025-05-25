@@ -135,32 +135,68 @@ namespace api_catalogoproductos.Controllers
         public HttpResponseMessage Put(int id, [FromBody]ArticuloDto arti)
         {
             GestionArticulos gestion = new GestionArticulos();
-            Articulo articulo = new Articulo();
 
-
-            if (arti == null || arti.codArticulo == null || arti.Nombre == null || arti.Descripcion==null || arti.ImagenURL == null || arti.Precio<0 || arti.IdMarca<=0 || arti.IdCategoria<=0)
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, "No estamos recibiendo los parametros correctos para continuar");
-            }
-            articulo.codArticulo = arti.codArticulo;
-            articulo.Nombre = arti.Nombre;
-            articulo.Descripcion = arti.Descripcion;
-            articulo.Precio = arti.Precio;
-            articulo.Marca = new Marca { Id = arti.IdMarca} ;
-            articulo.Categoria = new Categoria { Id = arti.IdCategoria } ;
-            articulo.IDArticulo = id;
-            articulo.Imagen = new Imagen { ImagenURL = arti.ImagenURL };
+                Articulo articulo = new Articulo();
+                Articulo articulo2 = gestion.BuscarArticuloPorId(id);
 
-            gestion.ModificarArticulo(articulo);
-            return Request.CreateResponse(HttpStatusCode.OK, "Articulo modificado exitosamente.");
+
+                if (articulo2 == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, $"Artículo con ID {id} no encontrado.");
+                }
+
+
+                if (arti == null || arti.codArticulo == null || arti.Nombre == null || arti.Descripcion == null || arti.ImagenURL == null || arti.Precio < 0 || arti.IdMarca <= 0 || arti.IdCategoria <= 0)
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "No estamos recibiendo los parametros correctos para continuar");
+                }
+
+                articulo.codArticulo = arti.codArticulo;
+                articulo.Nombre = arti.Nombre;
+                articulo.Descripcion = arti.Descripcion;
+                articulo.Precio = arti.Precio;
+                articulo.Marca = new Marca { Id = arti.IdMarca };
+                articulo.Categoria = new Categoria { Id = arti.IdCategoria };
+                articulo.IDArticulo = id;
+                articulo.Imagen = new Imagen { ImagenURL = arti.ImagenURL };
+
+                gestion.ModificarArticulo(articulo);
+                return Request.CreateResponse(HttpStatusCode.OK, "Articulo modificado exitosamente.");
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         // DELETE: api/CatalogoProductos/5
         public HttpResponseMessage Delete(int id)
         {
+            
             GestionArticulos gestion = new GestionArticulos();
-            gestion.EliminarArticulos(id);
-            return Request.CreateResponse(HttpStatusCode.OK, "Eliminado exitosamente.");
+
+            try
+            {
+                Articulo articulo = gestion.BuscarArticuloPorId(id);
+
+                if (articulo == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, $"Artículo con ID {id} no encontrado.");
+                }
+
+                gestion.EliminarArticulos(id);
+                return Request.CreateResponse(HttpStatusCode.OK, "Eliminado exitosamente.");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Ocurrió un error inesperado al eliminar el artículo.");
+            }
+
+            
         }
     }
 }
