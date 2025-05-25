@@ -108,6 +108,7 @@ namespace api_catalogoproductos.Controllers
         {
             GestionArticulos gestion = new GestionArticulos();
             Articulo articulo = new Articulo();
+          
             articulo.codArticulo = arti.codArticulo;
             articulo.Nombre = arti.Nombre;
             articulo.Descripcion = arti.Descripcion;
@@ -115,7 +116,7 @@ namespace api_catalogoproductos.Controllers
             articulo.Marca = new Marca { Id = arti.IdMarca} ;
             articulo.Categoria = new Categoria { Id = arti.IdCategoria } ;
             articulo.IDArticulo = id;
-            articulo.Imagen = new Imagen { IDImagen = arti.IdImagen };
+            articulo.Imagen = new Imagen { ImagenURL = arti.ImagenURL };
 
             gestion.ModificarArticulo(articulo);
         }

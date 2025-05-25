@@ -5,8 +5,6 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
 namespace Dominio
 {
     public class Articulo

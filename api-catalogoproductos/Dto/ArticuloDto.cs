@@ -38,7 +38,9 @@ namespace api_catalogoproductos.Dto
 
         public int IdCategoria { get; set; }
 
-        public int IdImagen { get; set; }
+        //public int IdImagen { get; set; }
+
+        public string ImagenURL { get; set; }
 
 
     }
