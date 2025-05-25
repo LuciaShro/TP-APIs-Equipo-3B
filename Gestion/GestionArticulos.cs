@@ -234,25 +234,58 @@ namespace Gestion
             }
         }
 
+        public Articulo BuscarArticuloPorId(int id)
+        {
+            Articulo articulo = null; 
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+   
+                datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, A.Precio, I.ImagenUrl " +
+                                     "FROM ARTICULOS A " +
+                                     "LEFT JOIN MARCAS M ON A.IdMarca = M.Id " +
+                                     "LEFT JOIN CATEGORIAS C ON A.IdCategoria = C.Id " +
+                                     "LEFT JOIN IMAGENES I ON A.Id = I.IdArticulo " +
+                                     "WHERE A.Id = @Id");
+
+                datos.setearParametro("@Id", id);
+
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read()) 
+                {
+                    articulo = new Articulo(); 
+
+                    articulo.IDArticulo = (int)datos.Lector["Id"];
+                    articulo.codArticulo = datos.Lector["Codigo"] is DBNull ? null : (string)datos.Lector["Codigo"];
+                    articulo.Nombre = datos.Lector["Nombre"] is DBNull ? null : (string)datos.Lector["Nombre"];
+                    articulo.Descripcion = datos.Lector["Descripcion"] is DBNull ? null : (string)datos.Lector["Descripcion"];
+
+                    articulo.Marca = new Marca();
+                    articulo.Marca.Id = (int)datos.Lector["IdMarca"];
+                    articulo.Marca.Nombre = datos.Lector["Marca"] is DBNull ? "" : (string)datos.Lector["Marca"];
+
+                    articulo.Categoria = new Categoria();
+                    articulo.Categoria.Id = (int)datos.Lector["IdCategoria"];
+                    articulo.Categoria.Nombre = datos.Lector["Categoria"] is DBNull ? "" : (string)datos.Lector["Categoria"];
+
+                    articulo.Precio = datos.Lector["Precio"] is DBNull ? 0m : (decimal)datos.Lector["Precio"]; // Usar 0m para decimales
+
+                    articulo.Imagen = new Imagen();
+                    articulo.Imagen.ImagenURL = datos.Lector["ImagenUrl"] is DBNull ? null : (string)datos.Lector["ImagenUrl"];
+                }
+
+                return articulo;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
         }
     }
-
-//Modificar articulos
-//public bool ModificarArticulo(int codArticulo)
-//{
-//}
-
-//Eliminar articulos
-//public bool EliminarArticulo(int codArticulo) 
-//{ 
-//}
-
-//Buscar articulos
-//public Articulo BuscarArticulo(int codArticulo)
-//{
-//}
-
-//Listar articulo
-//public void ListarArticulos()
-//{
-//}
+}

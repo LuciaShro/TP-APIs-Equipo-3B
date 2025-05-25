@@ -8,6 +8,7 @@ using Dominio;
 using Gestion;
 using api_catalogoproductos.Dto;
 using System.Xml.Linq;
+using static System.Collections.Specialized.BitVector32;
 
 namespace api_catalogoproductos.Controllers
 {
@@ -21,9 +22,24 @@ namespace api_catalogoproductos.Controllers
         }
 
         // GET: api/CatalogoProductos/5
-        public string Get(int id)
+        public HttpResponseMessage Get(int id)
         {
-            return "value";
+            GestionArticulos articulos = new GestionArticulos();
+            try
+            {
+                Articulo articulo = articulos.BuscarArticuloPorId(id);
+
+                if (articulo == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, $"Artículo con ID {id} no encontrado.");
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, articulo);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Ocurrió un error inesperado al buscar el artículo.");
+            }
         }
 
         // POST: api/CatalogoProductos
