@@ -27,6 +27,8 @@ namespace api_catalogoproductos.Controllers
         }
 
         // POST: api/CatalogoProductos
+        [HttpPost]
+        [Route("api/CatalogoProductos")]
         public HttpResponseMessage Post([FromBody]ArticuloDto art)
         {
             try
@@ -72,15 +74,18 @@ namespace api_catalogoproductos.Controllers
         }
 
         // agregar imagen al producto
-
-        public HttpResponseMessage PostImagen(int idArticulo, [FromBody] List<Imagen> img)
+        [HttpPost]
+        [Route("api/CatalogoProductos/AgregarImagen")]
+        public HttpResponseMessage PostImagen([FromBody]ImagenPost imgPost)
         {
-            if (img == null || img.Count == 0)
+            if (imgPost == null || imgPost.Img == null || !imgPost.Img.Any())
             {
                return Request.CreateResponse(HttpStatusCode.BadRequest, "No estamos recibiendo imagenes para continuar");
             }
             GestionImagen gestionImagen = new GestionImagen();
             GestionArticulos articulos = new GestionArticulos();
+
+            int idArticulo = imgPost.IdProducto;
 
             Articulo articulo = articulos.listar().Find(x => x.IDArticulo == idArticulo);
 
@@ -89,15 +94,14 @@ namespace api_catalogoproductos.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, "El id articulo no existe");
             }
             
-            foreach (var imagen in img)
+            foreach (var imagen in imgPost.Img)
             {
-                if (imagen.Articulo == null)
-                {
-                    imagen.Articulo = new Articulo();
-                }
-                
-                imagen.Articulo.IDArticulo = idArticulo;
-                gestionImagen.AgregarImagen(imagen, idArticulo);
+                Imagen image = new Imagen();
+                image.Articulo = new Articulo() { IDArticulo = idArticulo };
+                image.ImagenURL = imagen.Url;
+
+
+                gestionImagen.AgregarImagen(image, idArticulo);
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, "Imagen agregada exitosamente.");

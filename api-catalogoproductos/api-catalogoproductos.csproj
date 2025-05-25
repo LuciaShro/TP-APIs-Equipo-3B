@@ -157,6 +157,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Dto\ArticuloDto.cs" />
+    <Compile Include="Dto\ImagenDTO.cs" />
+    <Compile Include="Dto\ImagenPost.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
