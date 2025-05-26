@@ -19,10 +19,8 @@ namespace Gestion
             try
             {
 
-                //datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, A.Precio, I.ImagenUrl FROM ARTICULOS A LEFT JOIN MARCAS M ON A.IdMarca = M.Id LEFT JOIN CATEGORIAS C ON A.IdCategoria = C.Id LEFT JOIN IMAGENES I ON A.Id = I.IdArticulo;");
-                
+                // datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, A.Precio, I.ImagenUrl FROM ARTICULOS A LEFT JOIN MARCAS M ON A.IdMarca = M.Id LEFT JOIN CATEGORIAS C ON A.IdCategoria = C.Id LEFT JOIN IMAGENES I ON A.Id = I.IdArticulo;");
                 datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, A.Precio, I.Id AS IDImagen, I.ImagenUrl FROM ARTICULOS A LEFT JOIN MARCAS M ON A.IdMarca = M.Id LEFT JOIN CATEGORIAS C ON A.IdCategoria = C.Id LEFT JOIN IMAGENES I ON A.Id = I.IdArticulo;");
-
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -50,14 +48,11 @@ namespace Gestion
 
                     if (!(datos.Lector["Precio"] is DBNull))
                         aux.Precio = (decimal)datos.Lector["Precio"];
-
                     aux.Imagen = new Imagen();
                     if (!(datos.Lector["ImagenUrl"] is DBNull))
                         aux.Imagen.ImagenURL = (string)datos.Lector["ImagenUrl"];
-
                     if (!(datos.Lector["IDImagen"] is DBNull))
                         aux.Imagen.IDImagen = (int)datos.Lector["IDImagen"];
-
 
                     lista.Add(aux);
                 }
@@ -103,7 +98,7 @@ namespace Gestion
 
             try
             {
-                datos.setearConsulta("UPDATE ARTICULOS set Codigo = @Codigo, Nombre= @Nombre, Descripcion = @Descripcion, Precio = @Precio, IdMarca = @IdMarca, IdCategoria = @IdCategoria where Id = @Id;" + "UPDATE IMAGENES set ImagenUrl = @ImagenUrl WHERE IdArticulo = @Id and IdImagen=@IdImagen");
+                datos.setearConsulta("UPDATE ARTICULOS set Codigo = @Codigo, Nombre= @Nombre, Descripcion = @Descripcion, Precio = @Precio, IdMarca = @IdMarca, IdCategoria = @IdCategoria where Id = @Id;" + "UPDATE IMAGENES set ImagenUrl = @ImagenUrl WHERE IdArticulo = @Id and Id=@IdImagen");
                 datos.setearParametro("@Codigo", articulo.codArticulo);
                 datos.setearParametro("@Nombre", articulo.Nombre);
                 datos.setearParametro("@Descripcion", articulo.Descripcion);
@@ -245,13 +240,13 @@ namespace Gestion
 
         public Articulo BuscarArticuloPorId(int id)
         {
-            Articulo articulo = null; 
+            Articulo articulo = null;
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
 
-                datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, A.Precio, I.Id AS IDImagen, I.ImagenUrl " + 
+                datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, A.Precio, I.Id AS IDImagen, I.ImagenUrl " +
                      "FROM ARTICULOS A " +
                      "LEFT JOIN MARCAS M ON A.IdMarca = M.Id " +
                      "LEFT JOIN CATEGORIAS C ON A.IdCategoria = C.Id " +
@@ -262,9 +257,9 @@ namespace Gestion
 
                 datos.ejecutarLectura();
 
-                if (datos.Lector.Read()) 
+                if (datos.Lector.Read())
                 {
-                    articulo = new Articulo(); 
+                    articulo = new Articulo();
 
                     articulo.IDArticulo = (int)datos.Lector["Id"];
                     articulo.codArticulo = datos.Lector["Codigo"] is DBNull ? null : (string)datos.Lector["Codigo"];
