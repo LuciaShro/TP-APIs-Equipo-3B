@@ -18,8 +18,11 @@ namespace Gestion
 
             try
             {
-             
-                datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, A.Precio, I.ImagenUrl FROM ARTICULOS A LEFT JOIN MARCAS M ON A.IdMarca = M.Id LEFT JOIN CATEGORIAS C ON A.IdCategoria = C.Id LEFT JOIN IMAGENES I ON A.Id = I.IdArticulo;");
+
+                //datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, A.Precio, I.ImagenUrl FROM ARTICULOS A LEFT JOIN MARCAS M ON A.IdMarca = M.Id LEFT JOIN CATEGORIAS C ON A.IdCategoria = C.Id LEFT JOIN IMAGENES I ON A.Id = I.IdArticulo;");
+                
+                datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, A.Precio, I.Id AS IDImagen, I.ImagenUrl FROM ARTICULOS A LEFT JOIN MARCAS M ON A.IdMarca = M.Id LEFT JOIN CATEGORIAS C ON A.IdCategoria = C.Id LEFT JOIN IMAGENES I ON A.Id = I.IdArticulo;");
+
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -47,9 +50,14 @@ namespace Gestion
 
                     if (!(datos.Lector["Precio"] is DBNull))
                         aux.Precio = (decimal)datos.Lector["Precio"];
+
                     aux.Imagen = new Imagen();
                     if (!(datos.Lector["ImagenUrl"] is DBNull))
-                        aux.Imagen.ImagenURL = (string)datos.Lector["ImagenUrl"]; 
+                        aux.Imagen.ImagenURL = (string)datos.Lector["ImagenUrl"];
+
+                    if (!(datos.Lector["IDImagen"] is DBNull))
+                        aux.Imagen.IDImagen = (int)datos.Lector["IDImagen"];
+
 
                     lista.Add(aux);
                 }
@@ -242,7 +250,7 @@ namespace Gestion
             try
             {
 
-                datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, A.Precio, I.Id AS IDImagen, I.ImagenUrl " + // <-- Agregado I.Id AS IDImagen
+                datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, A.Precio, I.Id AS IDImagen, I.ImagenUrl " + 
                      "FROM ARTICULOS A " +
                      "LEFT JOIN MARCAS M ON A.IdMarca = M.Id " +
                      "LEFT JOIN CATEGORIAS C ON A.IdCategoria = C.Id " +
