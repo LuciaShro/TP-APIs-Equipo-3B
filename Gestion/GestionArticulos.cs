@@ -95,7 +95,7 @@ namespace Gestion
 
             try
             {
-                datos.setearConsulta("UPDATE ARTICULOS set Codigo = @Codigo, Nombre= @Nombre, Descripcion = @Descripcion, Precio = @Precio, IdMarca = @IdMarca, IdCategoria = @IdCategoria where Id = @Id;" + "UPDATE IMAGENES set ImagenUrl = @ImagenUrl WHERE IdArticulo = @Id");
+                datos.setearConsulta("UPDATE ARTICULOS set Codigo = @Codigo, Nombre= @Nombre, Descripcion = @Descripcion, Precio = @Precio, IdMarca = @IdMarca, IdCategoria = @IdCategoria where Id = @Id;" + "UPDATE IMAGENES set ImagenUrl = @ImagenUrl WHERE IdArticulo = @Id and IdImagen=@IdImagen");
                 datos.setearParametro("@Codigo", articulo.codArticulo);
                 datos.setearParametro("@Nombre", articulo.Nombre);
                 datos.setearParametro("@Descripcion", articulo.Descripcion);
@@ -103,6 +103,7 @@ namespace Gestion
                 datos.setearParametro("@IdMarca", articulo.Marca.Id);
                 datos.setearParametro("@IdCategoria", articulo.Categoria.Id);
                 datos.setearParametro("@Id", articulo.IDArticulo);
+                datos.setearParametro("@IdImagen", articulo.Imagen.IDImagen);
                 datos.setearParametro("@ImagenUrl", articulo.Imagen.ImagenURL);
                 datos.ejecutarAccion();
             }

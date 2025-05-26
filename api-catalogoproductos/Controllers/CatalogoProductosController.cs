@@ -148,7 +148,7 @@ namespace api_catalogoproductos.Controllers
                 }
 
 
-                if (arti == null || arti.codArticulo == null || arti.Nombre == null || arti.Descripcion == null || arti.ImagenURL == null || arti.Precio < 0 || arti.IdMarca <= 0 || arti.IdCategoria <= 0)
+                if (arti == null || arti.codArticulo == null || arti.Nombre == null || arti.Descripcion == null || arti.ImagenURL == null || arti.Precio < 0 || arti.IdMarca <= 0 || arti.IdCategoria <= 0 || arti.IdImagen<=0)
                 {
                     return Request.CreateResponse(HttpStatusCode.BadRequest, "No estamos recibiendo los parametros correctos para continuar");
                 }
@@ -160,7 +160,7 @@ namespace api_catalogoproductos.Controllers
                 articulo.Marca = new Marca { Id = arti.IdMarca };
                 articulo.Categoria = new Categoria { Id = arti.IdCategoria };
                 articulo.IDArticulo = id;
-                articulo.Imagen = new Imagen { ImagenURL = arti.ImagenURL };
+                articulo.Imagen = new Imagen { ImagenURL = arti.ImagenURL, IDImagen = arti.IdImagen };
 
                 gestion.ModificarArticulo(articulo);
                 return Request.CreateResponse(HttpStatusCode.OK, "Articulo modificado exitosamente.");
