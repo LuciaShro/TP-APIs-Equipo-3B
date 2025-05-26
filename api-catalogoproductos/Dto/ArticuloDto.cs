@@ -40,6 +40,7 @@ namespace api_catalogoproductos.Dto
 
         public int IdImagen { get; set; }
 
+        //public int IDImagen { get; set; }
         public string ImagenURL { get; set; }
 
 
